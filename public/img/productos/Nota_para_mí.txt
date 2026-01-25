@@ -1,0 +1,3 @@
+Las imagenes deben tener un tamaño de 600x400 px
+Formato .jpg
+Y menos de 200kb
