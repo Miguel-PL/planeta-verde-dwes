@@ -14,6 +14,8 @@ class AdminController {
         requireEmpleado(); // empleado o admin
 
         $resumen = Pedido::getResumenVentas();
+        $productosTop = Pedido::getProductosMasVendidos();
+        $ingresosMensuales = Pedido::getIngresosMensuales();
 
         require_once __DIR__ . '/../views/admin/index.php';
     }

@@ -39,4 +39,3 @@ function get_conexion()
         die("Error de conexión: " . $e->getMessage());
     }
 }
-

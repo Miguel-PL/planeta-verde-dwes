@@ -223,7 +223,7 @@ class Pedido
             SUM(total) AS total_ingresos
         FROM pedidos
         WHERE activo = 1
-     ";
+        ";
 
         $stmt = $pdo->query($sql);
 
@@ -243,11 +243,30 @@ class Pedido
         GROUP BY d.id_producto
         ORDER BY total_vendidos DESC
         LIMIT :limite
-    ";
+        ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
         $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getIngresosMensuales()
+    {
+        $pdo = get_conexion();
+
+        $sql = "
+        SELECT 
+            DATE_FORMAT(created_at, '%Y-%m') AS mes,
+            SUM(total) AS ingresos
+        FROM pedidos
+        WHERE activo = 1
+        GROUP BY mes
+        ORDER BY mes DESC
+        ";
+
+        $stmt = $pdo->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

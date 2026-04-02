@@ -103,6 +103,67 @@
 
         </div>
     </div>
+    <br>
+    <div class="container mt-4">
+        <h4 class="mb-3">Productos más vendidos</h4>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <?php if (!empty($productosTop)): ?>
+                    <ul class="list-group">
+
+                        <?php foreach ($productosTop as $producto): ?>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <?= htmlspecialchars($producto['nombre']) ?>
+                                <span class="badge bg-primary rounded-pill">
+                                    <?= $producto['total_vendidos'] ?>
+                                </span>
+                            </li>
+                        <?php endforeach; ?>
+
+                    </ul>
+                <?php else: ?>
+                    <p>No hay datos de ventas todavía.</p>
+                <?php endif; ?>
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container mt-4">
+        <h4 class="mb-3">Ingresos mensuales</h4>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <?php if (!empty($ingresosMensuales)): ?>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Mes</th>
+                                <th>Ingresos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php foreach ($ingresosMensuales as $fila): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($fila['mes']) ?></td>
+                                    <td><?= number_format($fila['ingresos'], 2) ?> €</td>
+                                </tr>
+                            <?php endforeach; ?>
+
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p>No hay datos disponibles.</p>
+                <?php endif; ?>
+
+            </div>
+        </div>
+    </div>
+    <br>
 
 </main>
 
