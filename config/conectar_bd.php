@@ -13,14 +13,15 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
     define('DB_PASS', '');
 } else {
     // Datos de conexión para el entorno de producción (servidor online)
-    define('DB_HOST', 'sqlXXX.infinityfree.com');
-    define('DB_NAME', 'nombre_bd_online');
-    define('DB_USER', 'usuario_bd');
-    define('DB_PASS', 'password_bd');
+    define('DB_HOST', 'sql108.infinityfree.com');
+    define('DB_NAME', 'if0_40705610_planeta_verde');
+    define('DB_USER', 'if0_40705610');
+    define('DB_PASS', 'YdIs0nWVK7');
 }
 
 // Función que crea y devuelve una conexión a la base de datos
-function get_conexion() {
+function get_conexion()
+{
     try {
         // Se construye el DSN con los datos de conexión y el charset UTF-8
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8";
