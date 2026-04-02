@@ -39,6 +39,13 @@ if (!empty($_SESSION['carrito'])) {
                     </li>
                 <?php endif; ?>
 
+                <!-- Enlace a Mi perfil -->
+                <?php if (isset($_SESSION['usuario'])): ?>
+                    <a href="index.php?controller=usuario&action=perfil" class="nav-link">
+                        Mi perfil
+                    </a>
+                <?php endif; ?>
+
                 <!-- Enlace inicio -->
                 <li class="nav-item">
                     <a class="nav-link"
@@ -182,7 +189,7 @@ if (!empty($_SESSION['carrito'])) {
         <div class="bg-light border-bottom py-3 mb-4">
             <div class="container">
                 <p class="mb-0 text-muted">
-                    Productos ecológicos seleccionados para ti 
+                    Productos ecológicos seleccionados para ti
                 </p>
             </div>
         </div>

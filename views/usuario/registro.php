@@ -8,12 +8,17 @@
             <h2 class="mb-4 text-center">Crear cuenta</h2>
 
             <form method="post"
-                  action="index.php?controller=usuario&action=guardarRegistro"
-                  class="card p-4 shadow-sm">
+                action="index.php?controller=usuario&action=guardarRegistro"
+                class="card p-4 shadow-sm">
 
                 <div class="mb-3">
                     <label class="form-label">Nombre</label>
                     <input type="text" name="nombre" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="dni" class="form-label">DNI</label>
+                    <input type="text" name="dni" id="dni" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
@@ -36,4 +41,3 @@
 </main>
 
 <?php require_once __DIR__ . "/../partials/footer.php"; ?>
-

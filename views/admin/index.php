@@ -17,7 +17,7 @@
                         Crear y editar categorías.
                     </p>
                     <a href="index.php?controller=categoria&action=index"
-                       class="btn btn-success w-100">
+                        class="btn btn-success w-100">
                         Gestionar
                     </a>
                 </div>
@@ -33,7 +33,7 @@
                         Alta, edición y control del catálogo.
                     </p>
                     <a href="index.php?controller=producto&action=admin"
-                       class="btn btn-success w-100">
+                        class="btn btn-success w-100">
                         Gestionar
                     </a>
                 </div>
@@ -49,7 +49,7 @@
                         Consultar y actualizar estados.
                     </p>
                     <a href="index.php?controller=pedido&action=admin"
-                       class="btn btn-success w-100">
+                        class="btn btn-success w-100">
                         Gestionar
                     </a>
                 </div>
@@ -65,7 +65,7 @@
                         Gestión de clientes y empleados.
                     </p>
                     <a href="index.php?controller=usuario&action=admin"
-                       class="btn btn-success w-100">
+                        class="btn btn-success w-100">
                         Gestionar
                     </a>
                 </div>
@@ -73,8 +73,37 @@
         </div>
 
     </div>
+    <br>
+    <div class="container mt-4">
+        <h2 class="mb-4">Informe de ventas</h2>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <div class="card text-bg-primary shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Total pedidos</h5>
+                        <p class="card-text fs-4">
+                            <?= $resumen['total_pedidos'] ?? 0 ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="card text-bg-success shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Ingresos totales</h5>
+                        <p class="card-text fs-4">
+                            <?= number_format($resumen['total_ingresos'] ?? 0, 2) ?> €
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </main>
 
 <?php require_once __DIR__ . '/../partials/footer.php'; ?>
-

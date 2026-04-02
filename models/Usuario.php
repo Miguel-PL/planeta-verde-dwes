@@ -90,23 +90,34 @@ class Usuario
     }
 
     // Registra un nuevo usuario
-    public static function registrar($nombre, $email, $password)
+    public static function registrar($nombre, $email, $password, $dni)
     {
-        // Abre conexión con la base de datos
         $pdo = get_conexion();
 
-        // Consulta de inserción de usuario
         $sql = "
-        INSERT INTO usuarios (nombre, email, password, rol, activo)
-        VALUES (:nombre, :email, :password, 'cliente', 1)
-    ";
+        INSERT INTO usuarios (nombre, dni, email, password, rol, activo)
+        VALUES (:nombre, :dni, :email, :password, 'cliente', 1)
+        ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':nombre' => $nombre,
+            ':dni' => $dni,
             ':email' => $email,
             ':password' => $password
         ]);
+    }
+
+    public static function getById($id)
+    {
+        $pdo = get_conexion();
+
+        $sql = "SELECT * FROM usuarios WHERE id_usuario = :id LIMIT 1";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // Filtra usuarios para el panel de administración
@@ -153,5 +164,25 @@ class Usuario
         // Devuelve todos los usuarios
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-}
 
+    public static function actualizar($id, $nombre, $dni, $email)
+    {
+        $pdo = get_conexion();
+
+        $sql = "
+        UPDATE usuarios
+        SET nombre = :nombre,
+            dni = :dni,
+            email = :email
+        WHERE id_usuario = :id
+        ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':nombre' => $nombre,
+            ':dni' => $dni,
+            ':email' => $email,
+            ':id' => $id
+        ]);
+    }
+}

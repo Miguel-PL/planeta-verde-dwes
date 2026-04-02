@@ -101,11 +101,12 @@ class UsuarioController
 
         // Obtiene los datos del formulario
         $nombre = trim($_POST['nombre'] ?? '');
+        $dni = trim($_POST['dni'] ?? '');
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
         // Valida campos obligatorios
-        if ($nombre === '' || $email === '' || $password === '') {
+        if ($nombre === '' || $email === '' || $password === '' || $dni === '') {
             setFlash('danger', 'Todos los campos son obligatorios.');
             header('Location: index.php?controller=usuario&action=registro');
             exit;
@@ -129,7 +130,7 @@ class UsuarioController
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
         // Registra el usuario en la base de datos
-        Usuario::registrar($nombre, $email, $hash);
+        Usuario::registrar($nombre, $email, $hash, $dni);
 
         // Realiza login automático tras el registro
         $usuario = Usuario::getByEmail($email);
@@ -141,6 +142,129 @@ class UsuarioController
         ];
 
         setFlash('success', 'Registro completado correctamente. Bienvenido a Planeta Verde.');
+        header('Location: index.php');
+        exit;
+    }
+
+    public function editar()
+    {
+        requireAdmin();
+
+        // Obtener id del usuario
+        $id = $_GET['id'] ?? null;
+
+        if (!$id) {
+            header('Location: index.php?controller=usuario&action=admin');
+            exit;
+        }
+
+        // Obtener usuario desde el modelo
+        $usuario = Usuario::getById($id);
+
+        if (!$usuario) {
+            header('Location: index.php?controller=usuario&action=admin');
+            exit;
+        }
+
+        // Cargar vista de edición
+        require_once __DIR__ . '/../views/admin/editar_usuario.php';
+    }
+
+    public function actualizar()
+    {
+        requireAdmin();
+
+        $id = $_POST['id'] ?? null;
+        $nombre = trim($_POST['nombre'] ?? '');
+        $dni = trim($_POST['dni'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+
+        if (!$id || $nombre === '' || $dni === '' || $email === '') {
+            header('Location: index.php?controller=usuario&action=admin');
+            exit;
+        }
+
+        Usuario::actualizar($id, $nombre, $dni, $email);
+
+        header('Location: index.php?controller=usuario&action=admin');
+        exit;
+    }
+
+    public function perfil()
+    {
+        // Comprobar que el usuario está logueado
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: index.php');
+            exit;
+        }
+
+        // Obtener datos del usuario actual
+        $id = $_SESSION['usuario']['id'];
+        $usuario = Usuario::getById($id);
+
+        // Cargar vista
+        require_once __DIR__ . '/../views/usuario/perfil.php';
+    }
+
+    public function actualizarPerfil()
+    {
+        // Comprobar que está logueado
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: index.php');
+            exit;
+        }
+
+        $id = $_SESSION['usuario']['id'];
+        $nombre = trim($_POST['nombre'] ?? '');
+        $dni = trim($_POST['dni'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+
+        if ($nombre === '' || $dni === '' || $email === '') {
+            header('Location: index.php?controller=home&action=index');
+            exit;
+        }
+
+        Usuario::actualizar($id, $nombre, $dni, $email);
+
+        // Actualizar nombre en sesión
+        $_SESSION['usuario']['nombre'] = $nombre;
+
+        require_once __DIR__ . '/../config/flash.php';
+        setFlash('success', 'Perfil actualizado correctamente.');
+
+        header('Location: index.php?controller=home&action=index');
+        exit;
+    }
+
+    public function bajaPerfil()
+    {
+        // Comprobar sesión
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: index.php');
+            exit;
+        }
+
+        // Evitar que un admin se dé de baja
+        if ($_SESSION['usuario']['rol'] === 'admin') {
+
+            require_once __DIR__ . '/../config/flash.php';
+            setFlash('success', 'Un adminitrador no puede darse de baja.');
+            
+            header('Location: index.php?controller=usuario&action=perfil');
+            exit;
+        }
+
+        $id = $_SESSION['usuario']['id'];
+
+        require_once __DIR__ . '/../config/flash.php';
+        setFlash('success', 'Se ha dado de baja correctamente.');
+
+        // Desactivar usuario
+        Usuario::desactivar($id);
+
+        unset($_SESSION['usuario']);
+
+        // Redirigir a inicio
         header('Location: index.php');
         exit;
     }

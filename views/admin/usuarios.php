@@ -44,16 +44,19 @@
         <thead>
             <tr>
                 <th>Nombre</th>
+                <th>DNI</th>
                 <th>Email</th>
                 <th>Rol</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                <th>Alta/Baja</th>
+                <th>Editar usuario</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($usuarios as $u): ?>
                 <tr>
                     <td><?= htmlspecialchars($u['nombre']) ?></td>
+                    <td><?= htmlspecialchars($u['dni'] ?? '-') ?></td>
                     <td><?= htmlspecialchars($u['email']) ?></td>
 
                     <!-- Columna de rol -->
@@ -94,6 +97,12 @@
                                 </a>
                             <?php endif; ?>
                         <?php endif; ?>
+                    </td>
+                    <td>
+                        <a href="index.php?controller=usuario&action=editar&id=<?= $u['id_usuario'] ?>"
+                            class="btn btn-sm btn-primary">
+                            Editar
+                        </a>
                     </td>
                 </tr>
             <?php endforeach; ?>

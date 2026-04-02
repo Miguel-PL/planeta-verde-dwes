@@ -212,5 +212,43 @@ class Pedido
         // Devuelve los pedidos filtrados
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-}
 
+    public static function getResumenVentas()
+    {
+        $pdo = get_conexion();
+
+        $sql = "
+        SELECT 
+            COUNT(*) AS total_pedidos,
+            SUM(total) AS total_ingresos
+        FROM pedidos
+        WHERE activo = 1
+     ";
+
+        $stmt = $pdo->query($sql);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function getProductosMasVendidos($limite = 5)
+    {
+        $pdo = get_conexion();
+
+        $sql = "
+        SELECT 
+            pr.nombre,
+            SUM(d.cantidad) AS total_vendidos
+        FROM detalle_pedido d
+        JOIN productos pr ON d.id_producto = pr.id_producto
+        GROUP BY d.id_producto
+        ORDER BY total_vendidos DESC
+        LIMIT :limite
+    ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
